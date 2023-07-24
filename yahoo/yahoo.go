@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sort"
 	"sync"
 
 	"local/ticker_fetcher/utils"
@@ -32,15 +33,52 @@ func FetchInfoFromYahoo(fund string, c chan<- YahooInfo, wg *sync.WaitGroup) Yah
 	return target
 }
 
-
 type YahooInfo struct {
 	Symbol        string  `json:"symbol"`
 	ExchangeName  string  `json:"fullExchangeName"`
 	Price         float64 `json:"regularMarketPrice"`
 	PreviousClose float64 `json:"regularMarketPreviousClose"`
 	Currency      string  `json:"currency"`
+	FromCurrency  string  `json:"fromCurrency"`
+	ShortName     string  `json:"shortName"`
 }
 
 func (fi *YahooInfo) Diff() float64 {
 	return (fi.Price - fi.PreviousClose) / fi.PreviousClose * 100
+}
+
+func ProcessFromYahoo(symbols string, display func(YahooInfo)) {
+
+	tickers := utils.ParseCommaString(symbols)
+
+	c := make(chan YahooInfo)
+	var wg sync.WaitGroup
+
+	for _, tick := range tickers {
+		wg.Add(1)
+		go FetchInfoFromYahoo(tick, c, &wg)
+	}
+
+	// Necessary to avoid deadlock
+	// https://stackoverflow.com/a/70877210/1585507
+	go func() {
+		wg.Wait()
+		close(c)
+	}()
+
+	var results []YahooInfo
+
+	for data := range c {
+		results = append(results, data)
+	}
+
+	// Ascending sort
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Symbol < results[j].Symbol
+	})
+
+	for _, data := range results {
+		display(data)
+	}
+
 }

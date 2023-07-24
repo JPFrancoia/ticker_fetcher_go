@@ -10,16 +10,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var stockCmd = &cobra.Command{
-	Use:   "stock",
-	Short: "Fetch performances for stocks",
+var cryptoCmd = &cobra.Command{
+	Use:   "crypto",
+	Short: "Fetch exchange rates for cryptos.",
+	Long:  "Fetch exchange rates for cryptos. Use Yahoo symbols. E.g BTC to USD is BTC-USD.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		display := func(data yahoo.YahooInfo) {
 			fmt.Printf(
 				"${alignc}%s: %g %s (%.2f %%)\n",
-				data.Symbol,
+				data.FromCurrency,
 				data.Price,
 				data.Currency,
 				data.Diff(),

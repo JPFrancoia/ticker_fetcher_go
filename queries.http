@@ -12,3 +12,15 @@ GET https://query2.finance.yahoo.com/v7/finance/options/VUSA.L
 GET https://query1.finance.yahoo.com/v8/finance/chart/BBLNF
 
 GET https://query2.finance.yahoo.com/v7/finance/options/BBLNF
+
+GET https://query2.finance.yahoo.com/v7/finance/options/BTC-USD
+
+GET https://query2.finance.yahoo.com/v7/finance/options/AVAX-USD
+
+GET https://query2.finance.yahoo.com/v7/finance/options/CRO-USD
+
+GET https://query2.finance.yahoo.com/v7/finance/options/BNB-USD
+
+GET https://query2.finance.yahoo.com/v7/finance/options/MATIC-USD
+
+GET https://query2.finance.yahoo.com/v7/finance/options/GBPEUR=X

@@ -10,6 +10,8 @@ import (
 func init() {
 	rootCmd.AddCommand(fundCmd)
 	rootCmd.AddCommand(stockCmd)
+	rootCmd.AddCommand(cryptoCmd)
+	rootCmd.AddCommand(fiatCmd)
 }
 
 var rootCmd = &cobra.Command{
