@@ -11,9 +11,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var fundCmd = &cobra.Command{
-	Use:   "fund",
-	Short: "Fetch performances for ETFs",
+var indexCmd = &cobra.Command{
+	Use:   "index",
+	Short: "Fetch indexes performances",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -21,18 +21,19 @@ var fundCmd = &cobra.Command{
 			if data.Currency == "USD" {
 				fmt.Printf(
 					"${alignc}%s = %.2f (%.2f %%)\n\n",
-					data.Symbol,
+					data.ExchangeName,
 					data.Price,
 					data.Diff(),
 				)
 			} else {
 				fmt.Printf(
 					"${alignc}%s = %.2f %s (%.2f %%)\n\n",
-					data.Symbol,
+					data.ExchangeName,
 					data.Price,
 					data.Currency,
 					data.Diff(),
 				)
+
 			}
 		}
 

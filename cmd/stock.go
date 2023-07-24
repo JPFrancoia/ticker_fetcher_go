@@ -17,13 +17,22 @@ var stockCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		display := func(data yahoo.YahooInfo) {
-			fmt.Printf(
-				"${alignc}%s: %g %s (%.2f %%)\n",
-				data.Symbol,
-				data.Price,
-				data.Currency,
-				data.Diff(),
-			)
+			if data.Currency == "USD" {
+				fmt.Printf(
+					"${alignc}%s = %.2f (%.2f %%)\n\n",
+					data.Symbol,
+					data.Price,
+					data.Diff(),
+				)
+			} else {
+				fmt.Printf(
+					"${alignc}%s = %.2f %s (%.2f %%)\n\n",
+					data.Symbol,
+					data.Price,
+					data.Currency,
+					data.Diff(),
+				)
+			}
 		}
 
 		yahoo.ProcessFromYahoo(args[0], display)

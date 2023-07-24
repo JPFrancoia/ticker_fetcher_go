@@ -34,13 +34,14 @@ func FetchInfoFromYahoo(fund string, c chan<- YahooInfo, wg *sync.WaitGroup) Yah
 }
 
 type YahooInfo struct {
-	Symbol        string  `json:"symbol"`
-	ExchangeName  string  `json:"fullExchangeName"`
-	Price         float64 `json:"regularMarketPrice"`
-	PreviousClose float64 `json:"regularMarketPreviousClose"`
-	Currency      string  `json:"currency"`
-	FromCurrency  string  `json:"fromCurrency"`
-	ShortName     string  `json:"shortName"`
+	Symbol           string  `json:"symbol"`
+	FullExchangeName string  `json:"fullExchangeName"`
+	ExchangeName     string  `json:"exchange"`
+	Price            float64 `json:"regularMarketPrice"`
+	PreviousClose    float64 `json:"regularMarketPreviousClose"`
+	Currency         string  `json:"currency"`
+	FromCurrency     string  `json:"fromCurrency"`
+	ShortName        string  `json:"shortName"`
 }
 
 func (fi *YahooInfo) Diff() float64 {

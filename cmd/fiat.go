@@ -21,11 +21,10 @@ var fiatCmd = &cobra.Command{
 		display := func(data yahoo.YahooInfo) {
 			fromTo := strings.Split(data.ShortName, "/")
 			fmt.Printf(
-				"${alignc}%s: %g %s (%.2f %%)\n",
+				"${alignc}1 %s = %.2f %s\n\n",
 				fromTo[0],
 				data.Price,
 				fromTo[1],
-				data.Diff(),
 			)
 		}
 

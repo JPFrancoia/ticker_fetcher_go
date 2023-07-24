@@ -12,6 +12,7 @@ func init() {
 	rootCmd.AddCommand(stockCmd)
 	rootCmd.AddCommand(cryptoCmd)
 	rootCmd.AddCommand(fiatCmd)
+	rootCmd.AddCommand(indexCmd)
 }
 
 var rootCmd = &cobra.Command{

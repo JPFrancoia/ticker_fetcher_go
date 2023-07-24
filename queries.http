@@ -24,3 +24,7 @@ GET https://query2.finance.yahoo.com/v7/finance/options/BNB-USD
 GET https://query2.finance.yahoo.com/v7/finance/options/MATIC-USD
 
 GET https://query2.finance.yahoo.com/v7/finance/options/GBPEUR=X
+
+GET https://query2.finance.yahoo.com/v7/finance/options/^GSPC
+
+GET https://query2.finance.yahoo.com/v7/finance/options/^DJI

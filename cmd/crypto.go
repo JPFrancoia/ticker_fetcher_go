@@ -18,13 +18,23 @@ var cryptoCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		display := func(data yahoo.YahooInfo) {
-			fmt.Printf(
-				"${alignc}%s: %g %s (%.2f %%)\n",
-				data.FromCurrency,
-				data.Price,
-				data.Currency,
-				data.Diff(),
-			)
+
+			if data.Currency == "USD" {
+				fmt.Printf(
+					"${alignc}1 %s = %.2f (%.2f %%)\n\n",
+					data.FromCurrency,
+					data.Price,
+					data.Diff(),
+				)
+			} else {
+				fmt.Printf(
+					"${alignc}1 %s = %.2f %s (%.2f %%)\n\n",
+					data.FromCurrency,
+					data.Price,
+					data.Currency,
+					data.Diff(),
+				)
+			}
 		}
 
 		yahoo.ProcessFromYahoo(args[0], display)
