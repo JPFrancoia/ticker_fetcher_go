@@ -1,4 +1,4 @@
-// Fetches information for index funds.
+// Fetches information for stocks.
 // Uses the Yahoo API.
 
 package cmd
@@ -6,17 +6,16 @@ package cmd
 import (
 	"fmt"
 	"local/ticker_fetcher/utils"
+	"local/ticker_fetcher/yahoo"
 	"sort"
 	"sync"
-
-	"local/ticker_fetcher/yahoo"
 
 	"github.com/spf13/cobra"
 )
 
-var fundCmd = &cobra.Command{
-	Use:   "fund",
-	Short: "Fetch performances for ETFs",
+var stockCmd = &cobra.Command{
+	Use:   "stock",
+	Short: "Fetch performances for stocks",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 

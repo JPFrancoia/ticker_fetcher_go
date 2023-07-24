@@ -9,6 +9,7 @@ import (
 
 func init() {
 	rootCmd.AddCommand(fundCmd)
+	rootCmd.AddCommand(stockCmd)
 }
 
 var rootCmd = &cobra.Command{

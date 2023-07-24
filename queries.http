@@ -1,0 +1,14 @@
+Content-Type: application/json
+# Host: http://localhost:5000
+#Host: https://query2.finance.yahoo.com/v8
+#Host: https://query2.finance.yahoo.com/v7
+Host: https://query1.finance.yahoo.com/v8
+
+#https://stackoverflow.com/questions/47267343/looking-for-a-free-sp-500-data-feed
+GET https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC
+
+GET https://query2.finance.yahoo.com/v7/finance/options/VUSA.L
+
+GET https://query1.finance.yahoo.com/v8/finance/chart/BBLNF
+
+GET https://query2.finance.yahoo.com/v7/finance/options/BBLNF

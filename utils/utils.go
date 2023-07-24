@@ -1,4 +1,4 @@
-package cmd
+package utils
 
 import (
 	"io/ioutil"
@@ -10,7 +10,7 @@ import (
 // Query an API.
 // The URL should be pre-formatted.
 // This function panics if any error occurs.
-func queryApi(url string) []byte {
+func QueryApi(url string) []byte {
 	r, err := http.Get(url)
 
 	if err != nil {
