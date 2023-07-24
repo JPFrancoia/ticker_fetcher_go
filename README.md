@@ -3,7 +3,8 @@
 This is a simple CLI tool to track stocks, indexes,
 funds, etc. The information it outputs needs to be used with
 [conky](https://github.com/brndnmtthws/conky). However the software should
-be easy to modify for any sort of output.
+be easy to modify for any sort of output. The source data comes from the Yahoo
+finance API.
 
 **Example with conky:**
 
