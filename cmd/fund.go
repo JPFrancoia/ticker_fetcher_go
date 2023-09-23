@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 
+	"local/ticker_fetcher/utils"
 	"local/ticker_fetcher/yahoo"
 
 	"github.com/spf13/cobra"
@@ -26,11 +27,12 @@ var fundCmd = &cobra.Command{
 					data.Diff(),
 				)
 			} else {
+				price, currency := utils.ConvertDecimal(data.Price, data.Currency)
 				fmt.Printf(
 					"${alignc}%s = %.2f %s (%.2f %%)\n\n",
 					data.Symbol,
-					data.Price,
-					data.Currency,
+					price,
+					currency,
 					data.Diff(),
 				)
 			}

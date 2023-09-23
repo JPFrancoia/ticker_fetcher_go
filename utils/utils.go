@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"strings"
@@ -19,7 +19,7 @@ func QueryApi(url string) []byte {
 
 	defer r.Body.Close()
 
-	responseBody, err := ioutil.ReadAll(r.Body)
+	responseBody, err := io.ReadAll(r.Body)
 
 	if err != nil {
 		log.Fatal(err)
@@ -33,4 +33,15 @@ func QueryApi(url string) []byte {
 // BBLN,BNTX,NVDA
 func ParseCommaString(argStr string) []string {
 	return strings.Split(argStr, ",")
+}
+
+// Sometimes the currency of a symbol/ticker is in pennies.
+// This function will convert the price to the real unit.
+func ConvertDecimal(price float64, currency string) (float64, string) {
+	switch currency {
+	case "GBp":
+		return price / 100, "GBP"
+	default:
+		return price, currency
+	}
 }

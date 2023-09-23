@@ -14,12 +14,12 @@ import (
 
 const URL_API = "https://query2.finance.yahoo.com/v7/finance/options"
 
-// Fetch the market information for one fund.
+// Fetch the market information for one symbol/ticker.
 // Returns the info + pushes the info to a channel.
-func FetchInfoFromYahoo(fund string, c chan<- YahooInfo, wg *sync.WaitGroup) YahooInfo {
+func FetchInfoFromYahoo(symbol string, c chan<- YahooInfo, wg *sync.WaitGroup) YahooInfo {
 	defer wg.Done()
 
-	responseBody := utils.QueryApi(fmt.Sprintf("%s/%s", URL_API, fund))
+	responseBody := utils.QueryApi(fmt.Sprintf("%s/%s", URL_API, symbol))
 
 	value := gjson.GetBytes(responseBody, "optionChain.result.0.quote")
 
@@ -44,14 +44,19 @@ type YahooInfo struct {
 	ShortName        string  `json:"shortName"`
 }
 
+// Compute the diff since the previous close (most of the time, this is a one-day diff)
 func (fi *YahooInfo) Diff() float64 {
 	return (fi.Price - fi.PreviousClose) / fi.PreviousClose * 100
 }
 
+// Main function, triggers the parsing of the input data + the info fetching.
+// The info for the symbols will be fetched at the same time, asynchronously.
 func ProcessFromYahoo(symbols string, display func(YahooInfo)) {
 
+	// Extract all the symbols from a comma-separated list
 	tickers := utils.ParseCommaString(symbols)
 
+	// Make a wait group to wait until the info for all the symbols is fetched
 	c := make(chan YahooInfo)
 	var wg sync.WaitGroup
 
@@ -67,13 +72,13 @@ func ProcessFromYahoo(symbols string, display func(YahooInfo)) {
 		close(c)
 	}()
 
+	// Read from the channel and build a list of results
 	var results []YahooInfo
-
 	for data := range c {
 		results = append(results, data)
 	}
 
-	// Ascending sort
+	// Ascending sort by symbol name
 	sort.Slice(results, func(i, j int) bool {
 		return results[i].Symbol < results[j].Symbol
 	})
@@ -81,5 +86,4 @@ func ProcessFromYahoo(symbols string, display func(YahooInfo)) {
 	for _, data := range results {
 		display(data)
 	}
-
 }
