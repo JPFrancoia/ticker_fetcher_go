@@ -1,10 +1,12 @@
 package yahoo
 
 import (
+	"cmp"
 	"encoding/json"
 	"fmt"
 	"log"
-	"sort"
+	"slices"
+	"strings"
 	"sync"
 
 	"local/ticker_fetcher/utils"
@@ -54,7 +56,22 @@ func (fi *YahooInfo) Diff() float64 {
 func ProcessFromYahoo(symbols string, display func(YahooInfo)) {
 
 	// Extract all the symbols from a comma-separated list
-	tickers := utils.ParseCommaString(symbols)
+	tickersAndAliases := utils.ParseCommaString(symbols)
+
+	// Build a map of aliases (if any) and a list of tickers
+	tickerToAlias := make(map[string]string)
+	var tickers []string
+
+	for _, tickAlias := range tickersAndAliases {
+		// We use the ":" separator to define an alias for a ticker
+		tickAliasSplit := strings.Split(tickAlias, ":")
+
+		if len(tickAliasSplit) == 2 {
+			// Map the ticker to its alias, if alias was provided
+			tickerToAlias[tickAliasSplit[0]] = tickAliasSplit[1]
+		}
+		tickers = append(tickers, tickAliasSplit[0])
+	}
 
 	// Make a wait group to wait until the info for all the symbols is fetched
 	c := make(chan YahooInfo)
@@ -75,12 +92,16 @@ func ProcessFromYahoo(symbols string, display func(YahooInfo)) {
 	// Read from the channel and build a list of results
 	var results []YahooInfo
 	for data := range c {
+		// If an alias was provided, use it instead of the ticker
+		if alias, ok := tickerToAlias[data.Symbol]; ok {
+			data.Symbol = alias
+		}
 		results = append(results, data)
 	}
 
 	// Ascending sort by symbol name
-	sort.Slice(results, func(i, j int) bool {
-		return results[i].Symbol < results[j].Symbol
+	slices.SortFunc(results, func(a, b YahooInfo) int {
+		return cmp.Compare(a.Symbol, b.Symbol)
 	})
 
 	for _, data := range results {

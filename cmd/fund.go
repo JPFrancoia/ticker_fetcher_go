@@ -14,10 +14,11 @@ import (
 
 var fundCmd = &cobra.Command{
 	Use:   "fund",
-	Short: "Fetch performances for ETFs",
+	Short: "Fetch performances for ETFs. Use ':' to separate the ticker from the alias.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
+		// Callable to display the data.
 		display := func(data yahoo.YahooInfo) {
 			if data.Currency == "USD" {
 				fmt.Printf(
