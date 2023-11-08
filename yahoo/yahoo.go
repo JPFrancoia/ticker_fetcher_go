@@ -14,7 +14,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-const URL_API = "https://query2.finance.yahoo.com/v7/finance/options"
+const URL_API = "https://query2.finance.yahoo.com/v6/finance/options"
 
 // Fetch the market information for one symbol/ticker.
 // Returns the info + pushes the info to a channel.
