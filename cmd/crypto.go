@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"local/ticker_fetcher/yahoo"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -19,17 +20,19 @@ var cryptoCmd = &cobra.Command{
 
 		display := func(data yahoo.YahooInfo) {
 
+			ticker := strings.Split(data.Symbol, "-")[0]
+
 			if data.Currency == "USD" {
 				fmt.Printf(
 					"${alignc}1 %s = %.2f (%.2f %%)\n\n",
-					data.FromCurrency,
+					ticker,
 					data.Price,
 					data.Diff(),
 				)
 			} else {
 				fmt.Printf(
 					"${alignc}1 %s = %.2f %s (%.2f %%)\n\n",
-					data.FromCurrency,
+					ticker,
 					data.Price,
 					data.Currency,
 					data.Diff(),

@@ -14,16 +14,16 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-const URL_API = "https://query2.finance.yahoo.com/v6/finance/options"
+const URL_API = "https://query2.finance.yahoo.com/v8/finance/chart"
 
 // Fetch the market information for one symbol/ticker.
 // Returns the info + pushes the info to a channel.
 func FetchInfoFromYahoo(symbol string, c chan<- YahooInfo, wg *sync.WaitGroup) YahooInfo {
 	defer wg.Done()
 
-	responseBody := utils.QueryApi(fmt.Sprintf("%s/%s", URL_API, symbol))
+	responseBody := utils.QueryApi(fmt.Sprintf("%s/%s?range=%s&interval=%s", URL_API, symbol, "1d", "1d"))
 
-	value := gjson.GetBytes(responseBody, "optionChain.result.0.quote")
+	value := gjson.GetBytes(responseBody, "chart.result.0.meta")
 
 	var target YahooInfo
 	if err := json.Unmarshal([]byte(value.Raw), &target); err != nil {
@@ -40,9 +40,8 @@ type YahooInfo struct {
 	FullExchangeName string  `json:"fullExchangeName"`
 	ExchangeName     string  `json:"exchange"`
 	Price            float64 `json:"regularMarketPrice"`
-	PreviousClose    float64 `json:"regularMarketPreviousClose"`
+	PreviousClose    float64 `json:"chartPreviousClose"`
 	Currency         string  `json:"currency"`
-	FromCurrency     string  `json:"fromCurrency"`
 	ShortName        string  `json:"shortName"`
 }
 
